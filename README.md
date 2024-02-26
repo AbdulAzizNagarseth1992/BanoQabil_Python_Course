@@ -1,119 +1,66 @@
-import pygame as pg
+# Pac-Man Game
 
-# Constants
-WIDTH, HEIGHT = 800, 700
-FPS = 60
+A simple Pac-Man game implemented in Python using the Pygame library.
 
-# Set up colors
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-YELLOW = (255, 255, 0)
-GREEN = (0, 255, 0)
+![Pac-Man Game Screenshot](screenshot.png)
 
-# Create the game window
-screen = pg.display.set_mode((WIDTH, HEIGHT))
-pg.display.set_caption("Maze Game")
+## Table of Contents
 
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Controls](#controls)
+- [Contributing](#contributing)
+- [License](#license)
 
-# Maze layout using a 2D array
-maze = [
-    '|||||||||||||||||||||||||||',
-    '|............|............|',
-    '|.||||.|||||.|.|||||.||||.|',
-    '|.||||.|||||.|.|||||.||||.|',
-    '|.........................|',
-    '|.||||.||.|||||||.||.||||.|',
-    '|......||....|....||......|',
-    '|.||||.||||| | |||||.||||.|',
-    '|.||||.||         ||.||||.|',
-    '|.||||.||  |||||  ||.||||.|',
-    '      .    |EEE|    .      ',
-    '|.||||.||  |||||  ||.||||.|',
-    '|.||||.||         ||.||||.|',
-    '|.||||.||.|||||||.||.||||.|',
-    '|............|............|',
-    '|.||||.|||||.|.|||||.||||.|',
-    '|....|.......P.......|....|',
-    '|||..|.||.|||||||.||.|..|||',
-    '|......||....|....||......|',
-    '|.||||||||||.|.||||||||||.|',
-    '|.........................|',
-    '|||||||||||||||||||||||||||'
-]
+## Introduction
 
-# Maze cell size
-cell_size = int(WIDTH / 27)
+This project is a recreation of the classic Pac-Man game using Python and Pygame. It provides a simplified version of the original game, allowing players to control Pac-Man through a maze, collecting pellets and avoiding ghosts.
 
-# Pac-Man properties
-pacman_size = cell_size / 2
-pacman_args = pg.Rect(cell_size, cell_size, pacman_size, pacman_size)
-pacman_pos = pg.Vector2(16, 13)
-pacman_speed = 5
+## Features
 
-def draw_maze(maze):
-    for y, row in enumerate(maze):
-        for x, cell in enumerate(row):
-            rect = pg.Rect(x * cell_size, y * cell_size, cell_size, cell_size)
-            if cell == '|':
-                pg.draw.rect(screen, WHITE, rect)
-            elif cell == '-':
-                pg.draw.rect(screen, BLACK, rect)
-            elif cell == '.':
-                dot_rect = pg.Rect(rect.centerx - 2, rect.centery - 2, 5, 5)
-                pg.draw.rect(screen, WHITE, dot_rect)
-            elif cell == 'P':
-                pacman_args.x = x * cell_size + pacman_size / 2
-                pacman_args.y = y * cell_size + pacman_size / 2
-                pacman_pos.x = x
-                pacman_pos.y = y
-                pg.draw.circle(screen, YELLOW, pacman_args.center, pacman_size)
+- Pac-Man movement controlled by arrow keys.
+- Ghost AI movement.
+- Score tracking.
+- Game over screen.
+- Simple maze layout.
 
-# Game loop
-running = True
-clock = pg.time.Clock()
+## Installation
 
-while running:
-    for event in pg.event.get():
-        if event.type == pg.QUIT:
-            running = False
+1. Clone the repository:
 
-    keys = pg.key.get_pressed()
+   ```bash
+   git clone https://github.com/your-username/pacman-game.git
+Navigate to the project directory:
 
-    # Update Pac-Man position based on direction
-    pacman_direction = pg.Vector2(0, 0)
+bash
+Copy code
+cd pacman-game
+Install dependencies:
 
-    if keys[pg.K_RIGHT]:
-        pacman_direction.x = 1
-    elif keys[pg.K_DOWN]:
-        pacman_direction.y = 1
-    elif keys[pg.K_LEFT]:
-        pacman_direction.x = -1
-    elif keys[pg.K_UP]:
-        pacman_direction.y = -1
+bash
+Copy code
+pip install -r requirements.txt
+Usage
+To play the game, run the following command:
 
-    # Check boundaries before updating Pac-Man position
-    new_x = int(pacman_pos.x + pacman_direction.x)
-    new_y = int(pacman_pos.y + pacman_direction.y)
-    if 0 <= new_x < len(maze[0]) and 0 <= new_y < len(maze):
-        # Change the position of 'P' to ' '
-        maze_row = list(maze[int(pacman_pos.y)])
-        maze_row[int(pacman_pos.x)] = ' '
-        maze[int(pacman_pos.y)] = ''.join(maze_row)
-        pacman_pos += pacman_direction
-        maze_row = list(maze[int(pacman_pos.y)])
-        maze_row[int(pacman_pos.x)] = 'P'
-        maze[int(pacman_pos.y)] = ''.join(maze_row)
+bash
+Copy code
+python pacman.py
+Controls
+Use the arrow keys to move Pac-Man through the maze:
+Up arrow: Move Up
+Down arrow: Move Down
+Left arrow: Move Left
+Right arrow: Move Right
+Contributing
+Contributions are welcome! If you find any bugs or have suggestions for improvements, please open an issue or submit a pull request.
 
-    # Fill the screen with a background color
-    screen.fill(BLACK)
+License
+This project is licensed under the MIT License.
 
-    # Draw the maze
-    draw_maze(maze)
+vbnet
+Copy code
 
-    # Update the display
-    pg.display.flip()
-
-    # Cap the frame rate
-    clock.tick(FPS)
-
-pg.quit()
+Replace `screenshot.png` with an actual screenshot of your game. You can pr
